@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+    <h1>Orders</h1>
+    {% if session.role in ['Waiter', 'Manager'] %}
+    <a href="{{ url_for('create_order') }}" class="btn btn-primary">+ New Order</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    {% if orders %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Table</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Waiter</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>{{ order.table_no }}</td>
+                <td><span class="badge badge-{{ order.status.lower() }}">{{ order.status }}</span></td>
+                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                <td>{{ order.waiter_name }}</td>
+                <td>{{ order.created_at }}</td>
+                <td>
+                    <a href="{{ url_for('view_order', order_id=order.id) }}" class="btn btn-sm btn-info">View</a>
+                    
+                    {% if order.status == 'Placed' %}
+                    <a href="{{ url_for('update_order_status', order_id=order.id, status='Preparing') }}" 
+                       class="btn btn-sm btn-warning">Start</a>
+                    {% elif order.status == 'Preparing' %}
+                    <a href="{{ url_for('update_order_status', order_id=order.id, status='Completed') }}" 
+                       class="btn btn-sm btn-success">Complete</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; padding: 2rem;">No orders found.</p>
+    {% endif %}
+</div>
+{% endblock %}

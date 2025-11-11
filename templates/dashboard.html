@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Welcome, {{ session.user_name }}! ({{ session.role }})</h1>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0;">
+    {% for key, value in stats.items() %}
+    <div style="background: white; padding: 1.5rem; border-radius: 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <h3 style="font-size: 2rem; color: #6F4E37;">{{ value }}</h3>
+        <p>{{ key.replace('_', ' ').title() }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="card">
+    <h2>Recent Orders</h2>
+    {% if recent_orders %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Table</th>
+                <th>Status</th>
+                <th>Total</th>
+                {% if session.role != 'Waiter' %}
+                <th>Waiter</th>
+                {% endif %}
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.table_no }}</td>
+                <td><span class="badge badge-{{ order.status.lower() }}">{{ order.status }}</span></td>
+                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                {% if session.role != 'Waiter' %}
+                <td>{{ order.waiter_name }}</td>
+                {% endif %}
+                <td>{{ order.created_at }}</td>
+                <td>
+                    <a href="{{ url_for('view_order', order_id=order.id) }}" class="btn btn-sm btn-info">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; padding: 2rem;">No orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

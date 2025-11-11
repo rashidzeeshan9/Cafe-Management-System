@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Add Menu Item{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>Add New Menu Item</h2>
+    
+    <form method="POST" action="{{ url_for('add_menu_item') }}">
+        <div class="form-group">
+            <label for="name">Item Name *</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="3"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="price">Price (₹) *</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Category *</label>
+            <select id="category" name="category" required>
+                <option value="Beverages">Beverages</option>
+                <option value="Food">Food</option>
+                <option value="Dessert">Dessert</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="stock_quantity">Stock Quantity *</label>
+            <input type="number" id="stock_quantity" name="stock_quantity" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Add Item</button>
+        <a href="{{ url_for('menu') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<style>
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        outline: none;
+        border-color: #6F4E37;
+    }
+</style>
+{% endblock %}

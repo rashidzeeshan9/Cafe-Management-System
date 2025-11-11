@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Menu{% endblock %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Menu Items</h1>
+    {% if session.role == 'Manager' %}
+    <a href="{{ url_for('add_menu_item') }}" class="btn btn-primary">+ Add Menu Item</a>
+    {% endif %}
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+    {% for item in menu_items %}
+    <div class="card {% if not item.is_available %}unavailable{% endif %}">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3 style="color: #6F4E37;">{{ item.name }}</h3>
+            <span class="badge" style="background: #e3f2fd; color: #1976d2;">{{ item.category }}</span>
+        </div>
+        <p style="color: #666; margin-bottom: 1rem;">{{ item.description }}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 1.5rem; font-weight: bold; color: #6F4E37;">₹{{ "%.2f"|format(item.price) }}</div>
+            <div style="font-size: 0.9rem; color: #666;">Stock: {{ item.stock_quantity }}</div>
+        </div>
+        
+        {% if session.role == 'Manager' %}
+        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+            <a href="{{ url_for('edit_menu_item', item_id=item.id) }}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{{ url_for('delete_menu_item', item_id=item.id) }}" 
+               onclick="return confirm('Delete this item?')" 
+               class="btn btn-sm btn-danger">Delete</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

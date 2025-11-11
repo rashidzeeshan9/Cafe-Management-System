@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Invoice #{{ invoice.id }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 0 auto;">
+    <div style="text-align: center; padding-bottom: 1rem; border-bottom: 2px solid #6F4E37;">
+        <h1 style="color: #6F4E37;">☕ Cafe Manager</h1>
+        <p>123 Cafe Street, City - 123456</p>
+        <p>Phone: +91-1234567890</p>
+    </div>
+    
+    <div style="margin: 2rem 0;">
+        <h2>INVOICE #{{ invoice.id }}</h2>
+        <p><strong>Date:</strong> {{ invoice.created_at }}</p>
+        <p><strong>Table:</strong> {{ invoice.table_no }}</p>
+        <p><strong>Served by:</strong> {{ invoice.waiter_name }}</p>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th style="text-align: right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>₹{{ "%.2f"|format(item.price_each) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td style="text-align: right;">₹{{ "%.2f"|format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Subtotal:</strong></td>
+                <td style="text-align: right;">₹{{ "%.2f"|format(invoice.subtotal) }}</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Tax (5% GST):</strong></td>
+                <td style="text-align: right;">₹{{ "%.2f"|format(invoice.tax) }}</td>
+            </tr>
+            {% if invoice.discount > 0 %}
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>Discount:</strong></td>
+                <td style="text-align: right;">-₹{{ "%.2f"|format(invoice.discount) }}</td>
+            </tr>
+            {% endif %}
+            <tr style="font-size: 1.2rem; background: #f8f9fa;">
+                <td colspan="3" style="text-align: right;"><strong>Grand Total:</strong></td>
+                <td style="text-align: right;"><strong>₹{{ "%.2f"|format(invoice.total) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+    
+    <div style="margin: 2rem 0; text-align: center;">
+        <h3>Payment Status: <span class="badge badge-{{ invoice.payment_status.lower() }}">{{ invoice.payment_status }}</span></h3>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+        {% if invoice.payment_status == 'Pending' and session.role in ['Cashier', 'Manager'] %}
+        <a href="{{ url_for('mark_paid', invoice_id=invoice.id) }}" class="btn btn-success">Mark as Paid</a>
+        {% endif %}
+        <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
+        <a href="{{ url_for('billing') }}" class="btn btn-secondary">Back to Billing</a>
+    </div>
+    
+    <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #ddd;">
+        <p>Thank you for your visit!</p>
+        <p>GST No: 27XXXXX1234X1ZX</p>
+    </div>
+</div>
+{% endblock %}

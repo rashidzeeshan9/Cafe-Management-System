@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Billing{% endblock %}
+{% block content %}
+<h1>Billing & Invoices</h1>
+
+<div class="card">
+    <h2>Completed Orders</h2>
+    
+    {% if orders %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Table</th>
+                <th>Total</th>
+                <th>Waiter</th>
+                <th>Payment Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong>#{{ order.id }}</strong></td>
+                <td>{{ order.table_no }}</td>
+                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+                <td>{{ order.waiter_name }}</td>
+                <td><span class="badge badge-{{ order.payment_status.lower() }}">{{ order.payment_status }}</span></td>
+                <td>
+                    {% if order.invoice_id %}
+                    <a href="{{ url_for('view_invoice', invoice_id=order.invoice_id) }}" class="btn btn-sm btn-info">View Invoice</a>
+                    {% else %}
+                    <a href="{{ url_for('generate_bill', order_id=order.id) }}" class="btn btn-sm btn-primary">Generate Bill</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="text-align: center; padding: 2rem;">No completed orders available.</p>
+    {% endif %}
+</div>
+{% endblock %}

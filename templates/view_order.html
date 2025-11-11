@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>Order #{{ order.id }}</h2>
+    <p><strong>Table:</strong> {{ order.table_no }}</p>
+    <p><strong>Status:</strong> <span class="badge badge-{{ order.status.lower() }}">{{ order.status }}</span></p>
+    <p><strong>Waiter:</strong> {{ order.waiter_name }}</p>
+    <p><strong>Date:</strong> {{ order.created_at }}</p>
+    
+    <h3 style="margin-top: 2rem;">Order Items</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>₹{{ "%.2f"|format(item.price_each) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ "%.2f"|format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold; background: #f8f9fa;">
+                <td colspan="3">Total</td>
+                <td>₹{{ "%.2f"|format(order.total_amount) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 2rem;">
+        <a href="{{ url_for('orders') }}" class="btn btn-secondary">Back to Orders</a>
+    </div>
+</div>
+{% endblock %}

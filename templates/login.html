@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Cafe Management{% endblock %}
+
+{% block content %}
+<style>
+    .login-container {
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .login-card {
+        background: white;
+        border-radius: 15px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        max-width: 450px;
+        width: 100%;
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .login-header h1 {
+        color: #6F4E37;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #6F4E37;
+    }
+    
+    .test-credentials {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+    
+    .test-credentials p {
+        margin: 0.3rem 0;
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h1>☕ Cafe Manager</h1>
+            <p>Login to your account</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+        
+        <div class="test-credentials">
+            <p><strong>Test Credentials:</strong></p>
+            <p>Manager: manager@cafe.com / manager123</p>
+            <p>Cashier: cashier@cafe.com / cashier123</p>
+            <p>Waiter: waiter@cafe.com / waiter123</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

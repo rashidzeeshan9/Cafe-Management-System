@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Create Order{% endblock %}
+{% block content %}
+<h1>Create New Order</h1>
+
+<form method="POST" action="{{ url_for('create_order') }}">
+    <div class="card">
+        <div class="form-group">
+            <label for="table_no">Table Number *</label>
+            <input type="text" id="table_no" name="table_no" required placeholder="e.g., T1, T2">
+        </div>
+        
+        <h3>Select Items</h3>
+        {% for item in menu_items %}
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border: 1px solid #ddd; margin: 0.5rem 0; border-radius: 8px;">
+            <div>
+                <strong>{{ item.name }}</strong>
+                <span style="color: #666;">- ₹{{ "%.2f"|format(item.price) }}</span>
+                <div style="font-size: 0.9rem; color: #666;">{{ item.category }}</div>
+            </div>
+            <div>
+                <label>Qty: </label>
+                <input type="number" name="quantities[]" value="0" min="0" max="{{ item.stock_quantity }}" style="width: 60px; padding: 0.5rem;">
+                <input type="hidden" name="item_ids[]" value="{{ item.id }}">
+            </div>
+        </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 2rem;">Place Order</button>
+    </div>
+</form>
+{% endblock %}

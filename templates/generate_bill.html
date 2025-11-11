@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Generate Bill{% endblock %}
+{% block content %}
+<div class="card">
+    <h2>Generate Bill for Order #{{ order.id }}</h2>
+    
+    <p><strong>Table:</strong> {{ order.table_no }}</p>
+    <p><strong>Waiter:</strong> {{ order.waiter_name }}</p>
+    
+    <h3 style="margin-top: 2rem;">Order Items</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.item_name }}</td>
+                <td>₹{{ "%.2f"|format(item.price_each) }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ "%.2f"|format(item.line_total) }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+        <p><strong>Subtotal:</strong> ₹{{ "%.2f"|format(order.total_amount) }}</p>
+        <p><strong>Tax (5% GST):</strong> ₹{{ "%.2f"|format(order.total_amount * 0.05) }}</p>
+    </div>
+    
+    <form method="POST" action="{{ url_for('generate_bill', order_id=order.id) }}" style="margin-top: 2rem;">
+        <div class="form-group">
+            <label for="discount">Discount Amount (Optional)</label>
+            <input type="number" id="discount" name="discount" value="0" min="0" step="0.01">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Generate Invoice</button>
+        <a href="{{ url_for('billing') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
