@@ -1,8 +1,3 @@
-
--- Cafe Management System Database Schema
--- Based on PDF Requirements (Simplified for MCA Minor Project)
-
--- Users Table (Actors: Manager, Cashier, Waiter)
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -63,9 +58,9 @@ CREATE TABLE invoices (
 
 -- Insert default users (Manager, Cashier, Waiter)
 INSERT INTO users (name, email, password, role) VALUES 
-('Admin Manager', 'manager@cafe.com', 'manager123', 'Manager'),
-('John Cashier', 'cashier@cafe.com', 'cashier123', 'Cashier'),
-('Mary Waiter', 'waiter@cafe.com', 'waiter123', 'Waiter');
+('Zeeshan', 'manager@cafe.com', 'manager123', 'Manager'),
+('Abbas', 'cashier@cafe.com', 'cashier123', 'Cashier'),
+('Ibrahim', 'waiter@cafe.com', 'waiter123', 'Waiter');
 
 -- Insert sample menu items
 INSERT INTO menu_items (name, description, price, category, stock_quantity) VALUES

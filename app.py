@@ -1,11 +1,3 @@
-# Cafe Management System - Flask Application
-# MCA Minor Project (Simplified Version)
-
-"""
-Main Flask application file
-Handles all routes and business logic
-"""
-
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from datetime import datetime
 import sqlite3
